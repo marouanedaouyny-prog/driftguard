@@ -29,16 +29,18 @@ jobs:
       - name: Security corpus regression
         shell: bash
         run: |
-          python -m driftguard scan tests/security_corpus/positive --fail-on-severity high --db driftguard-ci.db
-          test $? -eq 1
+          rc=0
+          python -m driftguard scan tests/security_corpus/positive --fail-on-severity high --db driftguard-ci.db || rc=$?
+          test "$rc" -eq 1
           python -m driftguard scan tests/security_corpus/negative --fail-on-severity high --db driftguard-ci.db
       - name: Refactor plan smoke
         run: python -m driftguard refactor plan examples/models --max-risk suggested --rules-dir examples/plugins --db driftguard-ci.db
       - name: LLM absence contract (exit 2)
         shell: bash
         run: |
-          python -m driftguard refactor analyze tests/golden/drift/renamed/models --llm-suggestions --llm-base-url http://127.0.0.1:1 --db driftguard-ci.db
-          test $? -eq 2
+          rc=0
+          python -m driftguard refactor analyze tests/golden/drift/renamed/models --llm-suggestions --llm-base-url http://127.0.0.1:1 --db driftguard-ci.db || rc=$?
+          test "$rc" -eq 2
 
   package:
     needs: matrix

@@ -21,7 +21,8 @@ jobs:
       - name: LLM absence contract (exit 2)
         shell: bash
         run: |
-          python -m driftguard refactor analyze tests/golden/drift/renamed/models --llm-suggestions --llm-base-url http://127.0.0.1:1 --db driftguard-ci.db
-          test $? -eq 2
+          rc=0
+          python -m driftguard refactor analyze tests/golden/drift/renamed/models --llm-suggestions --llm-base-url http://127.0.0.1:1 --db driftguard-ci.db || rc=$?
+          test "$rc" -eq 2
       - name: Trusted-code plugin seam
         run: python -m driftguard refactor plan examples/models --max-risk suggested --rules-dir examples/plugins --db driftguard-ci.db
