@@ -54,6 +54,12 @@ jobs:
         run: python scripts/build_zipapp.py
       - name: Smoke test zipapp
         run: python dist/driftguard.pyz --version
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build GHCR image
         uses: docker/build-push-action@v6
         with:
