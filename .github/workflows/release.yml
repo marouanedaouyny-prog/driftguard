@@ -1,0 +1,93 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  packages: write
+  pages: write
+  id-token: write
+
+jobs:
+  matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Unit suite
+        run: python -W error::ResourceWarning -m unittest discover -s tests
+      - name: Security corpus regression
+        shell: bash
+        run: |
+          python -m driftguard scan tests/security_corpus/positive --fail-on-severity high --db driftguard-ci.db
+          test $? -eq 1
+          python -m driftguard scan tests/security_corpus/negative --fail-on-severity high --db driftguard-ci.db
+      - name: Refactor plan smoke
+        run: python -m driftguard refactor plan examples/models --max-risk suggested --rules-dir examples/plugins --db driftguard-ci.db
+      - name: LLM absence contract (exit 2)
+        shell: bash
+        run: |
+          python -m driftguard refactor analyze tests/golden/drift/renamed/models --llm-suggestions --llm-base-url http://127.0.0.1:1 --db driftguard-ci.db
+          test $? -eq 2
+
+  package:
+    needs: matrix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build stdlib zipapp (zero-dependency fallback)
+        run: python scripts/build_zipapp.py
+      - name: Smoke test zipapp
+        run: python dist/driftguard.pyz --version
+      - name: Build GHCR image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/driftguard:${{ github.ref_name }}
+            ghcr.io/${{ github.repository_owner }}/driftguard:latest
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/driftguard.pyz
+          generate_release_notes: true
+
+  docs:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - name: Deploy to Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  stats:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Print adoption stats (PRD success criteria — measured, not gated)
+        run: |
+          echo "stars: $(curl -s https://api.github.com/repos/${{ github.repository }} | jq .stargazers_count)"
+          echo "contributors: $(curl -s https://api.github.com/repos/${{ github.repository }}/contributors | jq length)"

@@ -1,0 +1,1 @@
+SELECT id, user_email FROM {{ ref('producer') }}

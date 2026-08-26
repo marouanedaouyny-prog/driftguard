@@ -1,0 +1,58 @@
+{
+  "schema": "driftguard.stage.v1",
+  "v": 1,
+  "name": "stg_orders",
+  "path": "staging/stg_orders.sql",
+  "kind": "model",
+  "fingerprint": "sha256:02b20d41af7ef826d76b78873d60ea6a9daefccf495033654da115020d2cdd91",
+  "columns": [
+    {
+      "name": "order_id",
+      "source_expr": "order_id",
+      "alias": null,
+      "span": [
+        11,
+        19
+      ]
+    },
+    {
+      "name": "customer_id",
+      "source_expr": "customer_id",
+      "alias": null,
+      "span": [
+        25,
+        36
+      ]
+    },
+    {
+      "name": "amount",
+      "source_expr": "o.amount AS amount",
+      "alias": "amount",
+      "span": [
+        42,
+        60
+      ]
+    },
+    {
+      "name": "status",
+      "source_expr": "status",
+      "alias": null,
+      "span": [
+        66,
+        72
+      ]
+    }
+  ],
+  "refs": [
+    {
+      "name": "raw_orders",
+      "kind": "bare",
+      "span": null
+    }
+  ],
+  "sources": [],
+  "ctes": [],
+  "create_name": null,
+  "dialect_hints": [],
+  "diagnostics": []
+}

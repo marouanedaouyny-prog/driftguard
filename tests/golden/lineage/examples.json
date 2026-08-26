@@ -1,0 +1,28 @@
+{
+  "edges": [
+    {
+      "producer": "stg_orders",
+      "consumer": "fct_orders",
+      "kind": "ref"
+    },
+    {
+      "producer": "stg_orders",
+      "consumer": "fct_orders_renamed",
+      "kind": "ref"
+    }
+  ],
+  "cycles": [],
+  "missing": [
+    {
+      "consumer": "stg_orders",
+      "ref": "raw_orders"
+    }
+  ],
+  "topo_order": [
+    "stg_orders",
+    "fct_orders",
+    "fct_orders_renamed"
+  ],
+  "pipeline_fingerprint": "sha256:05c1ab2e6fdd2ad8fd365ee1e93189cbabf1c30d4c0182fdc11ad21d9533f10b",
+  "source_tables": []
+}

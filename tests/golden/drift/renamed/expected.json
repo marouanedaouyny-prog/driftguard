@@ -1,0 +1,28 @@
+{
+  "schema": "driftguard.drift.v1",
+  "version": 1,
+  "root": "models",
+  "pipeline_fingerprint": "sha256:044836ffa543a7e6875427b0c473e3205789f656a69b93aa7178428e907b44e7",
+  "threshold": 0.75,
+  "stages": 2,
+  "edges": 1,
+  "cycles": 0,
+  "breaking": true,
+  "drifts": [
+    {
+      "producer": "producer",
+      "consumer": "consumer",
+      "added": [
+        "user_email_v2"
+      ],
+      "removed": [],
+      "renamed": [
+        [
+          "user_email",
+          "user_email_v2"
+        ]
+      ],
+      "breaking": true
+    }
+  ]
+}

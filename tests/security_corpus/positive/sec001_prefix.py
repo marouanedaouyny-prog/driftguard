@@ -1,0 +1,3 @@
+import os
+
+api_key = "sk-1234567890abcdef1234567890abcdef"

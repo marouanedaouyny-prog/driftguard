@@ -1,0 +1,40 @@
+name: driftgate
+
+# Zero-cost schema-drift gate for dbt-style pipelines (ARCHITECTURE Phase 3):
+# `python -m driftguard drift <root> --threshold 0.75` exits 0 on clean or
+# non-breaking drift, 1 on breaking drift, 2/5 on usage/infra failures —
+# the workflow fails only on genuine breaking drift (exit 1); infra
+# failures (2-5) are reported as such, never as a drift verdict.
+
+on:
+  pull_request:
+    paths: ["models/**"]
+  workflow_dispatch:
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Schema-drift gate
+        id: drift
+        run: |
+          python -m driftguard drift models --threshold 0.75 --json > drift.json || code=$?
+          echo "drift_exit=${code:-0}" >> "$GITHUB_OUTPUT"
+          if [ "${code:-0}" = "1" ]; then
+            echo "::error::breaking schema drift detected — review drift.json and fix the refactor"
+            exit 1
+          fi
+          if [ "${code:-0}" -ge "2" ]; then
+            echo "::error::driftguard infra failure (exit ${code:-0}) — not a drift verdict"
+            exit "${code:-0}"
+          fi
+
+      - name: Show findings
+        if: always()
+        run: cat drift.json || true

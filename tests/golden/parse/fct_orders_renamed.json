@@ -1,0 +1,49 @@
+{
+  "schema": "driftguard.stage.v1",
+  "v": 1,
+  "name": "fct_orders_renamed",
+  "path": "marts/fct_orders_renamed.sql",
+  "kind": "model",
+  "fingerprint": "sha256:219b394e80616d35b7a92153290168226c502d1da786195cbbfd76fcd5286300",
+  "columns": [
+    {
+      "name": "order_id",
+      "source_expr": "order_id",
+      "alias": null,
+      "span": [
+        11,
+        19
+      ]
+    },
+    {
+      "name": "customer_id",
+      "source_expr": "customer_id",
+      "alias": null,
+      "span": [
+        25,
+        36
+      ]
+    },
+    {
+      "name": "amount",
+      "source_expr": "revenue AS amount",
+      "alias": "amount",
+      "span": [
+        42,
+        59
+      ]
+    }
+  ],
+  "refs": [
+    {
+      "name": "stg_orders",
+      "kind": "ref",
+      "span": null
+    }
+  ],
+  "sources": [],
+  "ctes": [],
+  "create_name": null,
+  "dialect_hints": [],
+  "diagnostics": []
+}

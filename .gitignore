@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Runtime artifacts
+*.db
+*.sqlite3
+refactor_plan.json
+
+# Build output
+dist/
+build/
+
+# Environments / editors
+.env
+.venv/
+.idea/
+.vscode/

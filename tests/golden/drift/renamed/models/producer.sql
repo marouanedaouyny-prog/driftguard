@@ -1,0 +1,1 @@
+SELECT id, user_email_v2 FROM raw

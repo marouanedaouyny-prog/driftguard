@@ -1,0 +1,12 @@
+{
+  "schema": "driftguard.drift.v1",
+  "version": 1,
+  "root": "models",
+  "pipeline_fingerprint": "sha256:57c4e54b5c88d53fe41f6ab709f648efb903ac5617ed510d8041be2aadf6a8b1",
+  "threshold": 0.75,
+  "stages": 2,
+  "edges": 1,
+  "cycles": 0,
+  "breaking": false,
+  "drifts": []
+}
