@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DriftGuard — Security-Aware Refactoring Assistant for Data Pipelines</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+         sans-serif; margin: 0 auto; max-width: 860px; padding: 2rem 1rem;
+         line-height: 1.6; }
+  code, pre { font-family: ui-monospace, Consolas, Menlo, monospace;
+              background: rgba(127,127,127,.12); border-radius: 4px; }
+  pre { padding: .75rem 1rem; overflow-x: auto; }
+  a { color: #0969da; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .tag { display: inline-block; background: #0969da; color: #fff;
+         border-radius: 999px; padding: .1rem .7rem; font-size: .85rem; }
+  h1 { margin-bottom: .25rem; }
+  ul.links { list-style: none; padding: 0; }
+  ul.links li { margin: .35rem 0; }
+</style>
+</head>
+<body>
+<h1>DriftGuard <span class="tag">v0.5.2</span></h1>
+<p><strong>Security-Aware Refactoring Assistant for Data Pipelines</strong> —
+parse SQL pipeline stages, build lineage, gate schema drift, scan security
+anti-patterns, and plan <em>safe, byte-exact, idempotent</em> SQL refactors
+behind a human approval gate.</p>
+<p>Zero runtime dependencies · Python 3.11+ stdlib + SQLite · deterministic
+and auditable.</p>
+
+<pre>$ pip-less install:
+$ python dist/driftguard.pyz --version
+driftguard 0.5.2
+
+$ python -m driftguard drift pipeline/          # schema-drift CI gate
+$ python -m driftguard scan pipeline/           # security baseline SEC-001..005
+$ python -m driftguard refactor plan pipeline/ --max-risk suggested
+$ python -m driftguard refactor apply 1 --dry-run</pre>
+
+<h2>Documentation</h2>
+<ul class="links">
+  <li><a href="https://github.com/marouanedaouyny-prog/driftguard#readme">README
+      — overview, usage, honest limits</a></li>
+  <li><a href="https://github.com/marouanedaouyny-prog/driftguard/blob/main/docs/API_SPEC.md">API
+      specification — CLI contract, exit codes, JSON envelopes</a></li>
+  <li><a href="https://github.com/marouanedaouyny-prog/driftguard/blob/main/docs/ARCHITECTURE.md">Architecture
+      — design decisions, rules catalog</a></li>
+  <li><a href="https://github.com/marouanedaouyny-prog/driftguard/blob/main/docs/DATA_MODEL.md">Data
+      model — SQLite schema and migrations</a></li>
+  <li><a href="https://github.com/marouanedaouyny-prog/driftguard/blob/main/SECURITY.md">Security
+      — threat model, redaction policy</a></li>
+  <li><a href="https://github.com/marouanedaouyny-prog/driftguard/blob/main/CONTRIBUTING.md">Contributing</a>
+      · <a href="https://github.com/marouanedaouyny-prog/driftguard/blob/main/CHANGELOG.md">Changelog</a></li>
+</ul>
+
+<h2>Get it</h2>
+<ul class="links">
+  <li><a href="https://github.com/marouanedaouyny-prog/driftguard/releases/tag/v0.5.2">Release
+      assets — single-file <code>driftguard.pyz</code> (stdlib zipapp)</a></li>
+  <li><code>docker pull ghcr.io/marouanedaouyny-prog/driftguard:v0.5.2</code></li>
+</ul>
+
+<p style="opacity:.6;font-size:.9rem">MIT licensed · © 2026
+marouanedaouyny-prog</p>
+</body>
+</html>
